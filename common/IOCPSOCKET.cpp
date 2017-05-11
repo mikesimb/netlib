@@ -847,7 +847,7 @@ void CZQ_CustomIocpServerSocket::socketAccept(SOCKET socket, char* IP, int port)
 
 		if (clientsocket->_socket != INVALID_SOCKET)
 		{
-			if (CreateIoCompletionPort((HANDLE)socket, _hIOCP, (unsigned long )clientsocket, 0) == 0)
+			if (CreateIoCompletionPort((HANDLE)socket, _hIOCP, (ULONG_PTR)clientsocket, 0) == 0)
 			{
 				socketErrorEvent(clientsocket, GetLastError());
 				clientsocket->forceClose();

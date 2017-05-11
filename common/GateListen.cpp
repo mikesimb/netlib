@@ -63,7 +63,7 @@ CZQ_CustomIocpClientSocket* CGateSocketServer::OnCreateClientSocket()
 
 void CGateSocketServer::LoadConfig()
 {
-	setServerIP("192.168.1.101");// ("192.168.198.117");
+	setServerIP("192.168.1.100");// ("192.168.198.117");
 	setServerPort(7001);
 	open();
 
