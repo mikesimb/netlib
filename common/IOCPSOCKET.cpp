@@ -1213,7 +1213,7 @@ void CZQ_IocpClientSocket::setActive(bool Value)
 {
 	if (Value)
 	{
-		if ((_IOCPSOCKET.socket != INVALID_SOCKET) || (_IOCPSOCKET.port = 0 )||(inet_addr(_IOCPSOCKET.IP)==INADDR_NONE))
+		if ((_IOCPSOCKET.socket != INVALID_SOCKET) || (_IOCPSOCKET.port == 0 )||(inet_addr(_IOCPSOCKET.IP)==INADDR_NONE))
 		{
 			return;
 		}

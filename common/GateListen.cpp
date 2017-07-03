@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ #include "stdafx.h"
 #include "GateListen.h"
 #include <stdio.h>
 #include <iostream>
@@ -63,7 +63,7 @@ CZQ_CustomIocpClientSocket* CGateSocketServer::OnCreateClientSocket()
 
 void CGateSocketServer::LoadConfig()
 {
-	setServerIP("192.168.1.100");// ("192.168.198.117");
+	setServerIP("10.246.133.89");// ("192.168.198.117");
 	setServerPort(7001);
 	open();
 

@@ -284,8 +284,6 @@ public:
 private:
 	CZQ_CustomIocpServerSocket* _parentSocket;
 
-
-
 };
 
 /************************************************************************/

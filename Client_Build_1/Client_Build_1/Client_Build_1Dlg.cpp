@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CClient_Build_1Dlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CClient_Build_1Dlg::OnBnClickedButton1)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -115,6 +116,11 @@ BOOL CClient_Build_1Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	WORD wVersionRequested;
+	WSADATA wsaData;
+	int err;
+	wVersionRequested = MAKEWORD(1, 1);
+	err = WSAStartup(wVersionRequested, &wsaData);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -174,12 +180,20 @@ void CClient_Build_1Dlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	m_client = new CClientSocket();
-	m_client->setServerIP("127.0.0.1");
-	m_client->setServerPort(7100);
+	m_client->setServerIP("10.246.33.89");
+	m_client->setServerPort(7001);
 	
 	m_client->OnConnect = IOCP_EVENT_CALLBACK_1(CClient_Build_1Dlg::OnConnect,this);
 	m_client->OnDisConnect = IOCP_EVENT_CALLBACK_1(CClient_Build_1Dlg::OnDisconnect,this);
 	m_client->OnSocketError = IOCP_EVENT_CALLBACK_2(CClient_Build_1Dlg::OnError, this);
 
 	m_client->open();
+}
+
+
+void CClient_Build_1Dlg::OnClose()
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	WSACleanup();
+	CDialogEx::OnClose();
 }
