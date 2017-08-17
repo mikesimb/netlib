@@ -170,7 +170,7 @@ protected:
 	//@@终止化
 	virtual void finalize();
 	//@@包解析
-	virtual void socketRead(void *buf, int count);
+	virtual void SocketRead(void *buf, int count);
 
 private:
 	//@@客户端读取

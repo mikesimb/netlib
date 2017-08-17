@@ -27,6 +27,7 @@ class CGateUser :public CZQ_CustomIocpClientSocket
 private:
 
 	char*			m_ReviceBuffer;
+	//ÒÑ¾­´æ´¢µÄ»º´æ
 	int				m_ReviceBufferLen;
 	std::string  m_Sel_ServerName;
 	int             m_ClientVersioin;
@@ -38,7 +39,7 @@ private:
 	void         ContinueSelectServer();
 	bool         SendPKWarking();
 protected:
-	void SocketRead(void* buf, int count) ;
+	virtual void SocketRead(void* buf, int count) ;
 	void Initialize();
 public:
 	CGateUser();

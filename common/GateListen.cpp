@@ -15,6 +15,7 @@ CGateSocketServer::CGateSocketServer()
 	OnDisConnect = IOCP_EVENT_CALLBACK_1(CGateSocketServer::ClientSocketDisconnect, this);
 	OnSocketError = IOCP_EVENT_CALLBACK_2(CGateSocketServer::ClientServerSocketError, this);
 	LoadConfig();
+	
 }
 
 CGateSocketServer::~CGateSocketServer()
@@ -63,7 +64,7 @@ CZQ_CustomIocpClientSocket* CGateSocketServer::OnCreateClientSocket()
 
 void CGateSocketServer::LoadConfig()
 {
-	setServerIP("10.246.133.89");// ("192.168.198.117");
+	setServerIP("10.246.52.167");// ("192.168.198.117");
 	setServerPort(7001);
 	open();
 
@@ -78,6 +79,7 @@ void CGateSocketServer::LoadConfig()
 CGateUser::CGateUser()
 {
 	m_ReviceBuffer = new char[MAX_RECEIVE_LENGTH];
+	m_ReviceBufferLen = 0;
 
 }
 
@@ -173,21 +175,26 @@ bool CGateUser::SendPKWarking()
 	return false;
 }
 
-void CGateUser::SocketRead(void* buf, int count)
+void CGateUser::SocketRead(void *buf, int count)
 {
 	bool boWarning;
 	int ioffset, doffset, Packagelen;
+	//缓存区域的
 	if (count + m_ReviceBufferLen > MAX_RECEIVE_LENGTH)
 		return;
-	memmove_s(&m_ReviceBuffer[m_ReviceBufferLen], m_ReviceBufferLen, buf, count);
+	memmove_s(&m_ReviceBuffer[m_ReviceBufferLen], count, buf, count);
 	m_ReviceBufferLen += count;
 	boWarning = false;
 	ioffset = 0;
-	while (m_ReviceBufferLen - ioffset > sizeof(ClientMessage))
+	int F = sizeof(ClientMessage);
+	;
+	while (m_ReviceBufferLen - ioffset >= sizeof(ClientMessage))
 	{
-		if (pClientMessage(&m_ReviceBuffer[ioffset])->Sign == SEGMENTATION_IDENT)
+		pClientMessage pcm = pClientMessage(&m_ReviceBuffer[ioffset]);
+		if (pcm->Sign == SEGMENTATION_IDENT)
 		{
-			Packagelen = sizeof(ClientMessage) + pClientMessage(&m_ReviceBuffer[ioffset])->DataLength;
+			Packagelen = sizeof(ClientMessage) + pcm->DataLength;
+			//这种情况可能出现吗？
 			if (Packagelen >= MAX_RECEIVE_LENGTH)
 			{
 				ioffset = m_ReviceBufferLen;
@@ -197,11 +204,11 @@ void CGateUser::SocketRead(void* buf, int count)
 			{
 				break;
 			}
-			switch (pClientMessage(&m_ReviceBuffer[ioffset])->Cmd)
+			switch (pcm->Cmd)
 			{
 			case  LM_DYN_ENCRYPT_CODE:
 				doffset = sizeof(ClientMessage) + ioffset;
-				ProcClientMsg(&m_ReviceBuffer[doffset], pClientMessage(&m_ReviceBuffer[ioffset])->DataLength);
+				ProcClientMsg(&m_ReviceBuffer[doffset], pcm->DataLength);
 				break;
 			case LM_GET_ENCRYPT:
 				InitAreaIndex(0);

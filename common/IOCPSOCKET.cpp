@@ -183,7 +183,7 @@ void CZQ_CustomIocpClientSocket::finalize()
 	_data = nullptr;
 }
 
-void CZQ_CustomIocpClientSocket::socketRead(void *buf, int count)
+void CZQ_CustomIocpClientSocket::SocketRead(void *buf, int count)
 {
 	if (_onReviceEvent != nullptr)
 	{
@@ -197,7 +197,7 @@ void CZQ_CustomIocpClientSocket::doClientRead(pBlock pRBlock, int transfered)
 	{
 		do {
 			pRBlock->Buffer[transfered] = 0;
-			socketRead(pRBlock->Buffer, transfered);
+			SocketRead(pRBlock->Buffer, transfered);
 		} while (0);
 		if (_socket != INVALID_SOCKET)
 		{

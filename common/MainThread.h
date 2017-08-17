@@ -26,12 +26,18 @@ private:
 	void DispenseGateMessage();
 	void DispenseDBMessage();
 
+	void Release();
+
 
 private:
 	unsigned long    m_Event;
 	int                      m_SessionID;
-	pThreadMsgNode * m_TopCMNode;
-	pThreadMsgNode * m_BotCMNode;
+	pThreadMsgNode  m_TopCMNode;
+	pThreadMsgNode  m_BotCMNode;
+
+	pThreadMsgNode  m_TopDBNode;
+	pThreadMsgNode  m_BotDBNode;
+
 
 	CRITICAL_SECTION   m_GateCS;
 	CRITICAL_SECTION   m_DBCS;
